@@ -1,6 +1,6 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
 import { setupCounter } from './counter.js'
+import javascriptLogo from './javascript.svg'
+import './style.css'
 
 document.querySelector('#app').innerHTML = `
   <div>
