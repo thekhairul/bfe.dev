@@ -20,3 +20,15 @@ export function curryWithPlaceholder(fn) {
     }
 }
 curryWithPlaceholder.placeholder = Symbol()
+
+// 3. implement Array.prototype.flat
+// TODO: understand iterative solution from BFE.dev
+export function flat(arr, depth = 1) {
+    if (depth < 1) return [...arr];
+    const result = [];
+    for (let i = 0; i < arr.length; i++) {
+        if (Array.isArray(arr[i])) result.push(...flat(arr[i], depth - 1));
+        else result.push(arr[i]);
+    }
+    return result;
+}
