@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { curry } from './questions';
+import { curry, curryWithPlaceholder } from './questions';
 
 describe('implement curry', () => {
     it('should return a function', () => {
@@ -27,3 +27,19 @@ describe('implement curry', () => {
         expect(curried(1,2)(3)).toEqual(6);
     })
 });
+
+describe('implement curry with placeholder', () => {
+    it('should return a function', () => {
+        const curried = curryWithPlaceholder((a, b, c) => `${a}_${b}_${c}`);
+        expect(curried).toBeTypeOf('function');
+    });
+
+    it('should return error if argument is not a function', () => {
+        const curried = curryWithPlaceholder('hi');
+        expect(curried).toBeInstanceOf(Error);
+    });
+
+    it('should return placeholder function if curry placeholder is used', () => {
+        const curried = curryWithPlaceholder()
+    })
+})

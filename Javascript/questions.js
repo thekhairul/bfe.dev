@@ -23,7 +23,7 @@ curryWithPlaceholder.placeholder = Symbol()
 
 // 3. implement Array.prototype.flat
 // TODO: understand iterative solution from BFE.dev
-export function flat(arr, depth = 1) {
+export function flatRecurse(arr, depth = 1) {
     if (depth < 1) return [...arr];
     const result = [];
     for (let i = 0; i < arr.length; i++) {
@@ -31,4 +31,47 @@ export function flat(arr, depth = 1) {
         else result.push(arr[i]);
     }
     return result;
+}
+
+export function flatIter(arr, depth = 1) {
+    const stack = arr.map(item => [item, depth]);
+    const result = [];
+
+    while (stack.length) {
+        const [item, itemDepth] = stack.pop();
+        if (Array.isArray(item) && itemDepth > 0) {
+            stack.push(...item.map(i => [i, itemDepth - 1]));
+        } else {
+            result.push(item);
+        }
+    }
+
+    return result;
+}
+
+// 4. implement basic throttle()
+export function throttle(func, wait) {
+  let waiting = false;
+  let waitingArgs;
+
+  return (...args) => {
+    // if called during waiting period, just store the args and return
+    if (waiting) {
+      waitingArgs = args;
+      return;
+    }
+    // if called in normal period, immediately run the 'func'
+    func(...args);
+    // and then start waiting period
+    waiting = true;
+    const timeOut = setTimeout(() => {
+      clearTimeout(timeOut);
+      waiting = false;
+      // when waiting period ends in setTimeout, call the 'func' with previously stored args
+      if (waitingArgs) {
+        func(...waitingArgs);
+        waitingArgs = null;
+      }
+    }, wait);
+  }
 }

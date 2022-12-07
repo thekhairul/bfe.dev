@@ -1,7 +1,6 @@
-import { setupCounter } from './counter.js';
+import { setupCounter } from './counter';
 import javascriptLogo from './javascript.svg';
 import './style.css';
-import type { myRequired } from './Typescript/questions';
 
 document.querySelector('#app').innerHTML = `
   <div>
@@ -22,12 +21,3 @@ document.querySelector('#app').innerHTML = `
 `
 
 setupCounter(document.querySelector('#counter'))
-
-type Foo = {
-  name?: string;
-  age: number
-}
-const user: myRequired<Foo> = {
-  name: 'Khairul',
-  age: 30
-}
