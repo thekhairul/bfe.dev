@@ -1,23 +1,26 @@
-import { setupCounter } from './counter';
-import javascriptLogo from './javascript.svg';
+import html2vdom from "html-to-vdom";
+import pako from "pako";
+import vnode from "virtual-dom/vnode/vnode";
+import vtext from "virtual-dom/vnode/vtext";
 import './style.css';
+import html from "./temp";
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+const convertHTML = html2vdom({
+  VNode: vnode,
+  VText: vtext
+});
+console.time('vdom');
+const vtree = convertHTML(html);
+const vtreeStr = JSON.stringify(vtree);
+const compressedData = pako.gzip(vtreeStr, { to: 'string' });
+console.log(compressedData);
+// console.log(vtree);
+// vtree.forEach(element => {
+//   const el = createElement(element);
+//   document.body.appendChild(el);
+// });
 
-setupCounter(document.querySelector('#counter'))
+console.timeEnd('vdom');
+// console.log(createElement);
+
+// setupCounter(document.querySelector('#counter'))
