@@ -75,3 +75,49 @@ export function throttle(func, wait) {
     }, wait);
   }
 }
+
+// 5. implement throttle() with leading & trailing option
+export function throttleWithOptions(func, wait, options = {}) {
+  let waiting = false;
+  let waitingArgs;
+  const config = { leading: true, trailing: true, ...options };
+
+  const startWaiting = () => {
+    waiting = true;
+    const timeOut = setTimeout(() => {
+      clearTimeout(timeOut);
+      waiting = false;
+
+      if (waitingArgs && config.trailing) {
+        func.apply(this,waitingArgs);
+        waitingArgs = null;
+        startWaiting();
+      }
+    }, wait);
+  }
+
+  return (...args) => {
+    if (waiting) {
+      waitingArgs = args;
+      return;
+    }
+
+    if (config.leading) func.apply(this,args);
+
+    startWaiting();
+  }
+}
+
+// 6. implement basic debounce
+export function debounce(func, wait) {
+  let timer = null;
+
+  return function debounced(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, wait);
+  }
+}
+
+// 8. shuffle an array in place with same probability
